@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+  app:
+    image: sbordeyne/k8slokilogs:1.0.0
+    container_name: k8slokilogs
+    volumes:
+      - ./synced:/synced
