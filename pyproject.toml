@@ -14,6 +14,8 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
+requests = "^2.29.0"
+kubernetes = "^26.1.0"
 
 [tool.poe.tasks]
 add_changelog  = { script = "scripts.add_changelog:main" }
@@ -30,6 +32,9 @@ poethepoet = "^0.12.2"
 toml = "^0.10.2"
 tbump = "^6.7.0"
 sphinx = '*'
+
+[tool.poetry.scripts]
+app = "k8slokilogs.__main__:main"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -90,6 +95,7 @@ feat = "New features"
 san = "Refactorings"
 add = "New features"
 mod = "Modifications"
+
 [tool.docker.build]
 architectures = ["amd64"]
 use_latest = true

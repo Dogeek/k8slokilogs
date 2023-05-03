@@ -1,0 +1,13 @@
+apiVersion: skaffold/v4beta4
+kind: Config
+metadata:
+  name: k-slokilogs
+build:
+  artifacts:
+    - image: sbordeyne/k8slokilogs
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  kustomize:
+    paths:
+      - k8s

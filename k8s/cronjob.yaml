@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: k8slokilogs
+  labels:
+    release: stable
+spec:
+  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 2
+  schedule: "* * * * *"
+  jobTemplate:
+    metadata:
+      labels:
+        name: k8slokilogspod
+    spec:
+      template:
+        spec:
+          serviceAccountName: kubelokilogs
+          containers:
+          - name: k8slokilogs
+            image: sbordeyne/k8slokilogs:latest
+            command:
+              - python3
+              - -m
+              - poetry
+              - run
+              - app
+            imagePullPolicy: IfNotPresent
+            resources:
+              limits:
+                cpu: 1000m
+                memory: 1Gi
+            env:
+              - name: K8SLOKILOGS_HOST_IP
+                valueFrom:
+                  configMapKeyRef:
+                    name: k8slokilogs-configmap
+                    key: loki_host_ip
+              - name: K8SLOKILOGS_HOST_PORT
+                valueFrom:
+                  configMapKeyRef:
+                    name: k8slokilogs-configmap
+                    key: loki_host_port
+              - name: K8SLOKILOGS_SCRAPER_SINCE_SECONDS
+                valueFrom:
+                  configMapKeyRef:
+                    name: k8slokilogs-configmap
+                    key: frequency_seconds
+              - name: K8SLOKILOGS_SCRAPER_NAMESPACE
+                valueFrom:
+                  configMapKeyRef:
+                    name: k8slokilogs-configmap
+                    key: namespaces
+              - name: K8SLOKILOGS_IN_ClUSTER
+                value: "true"
+          restartPolicy: Never

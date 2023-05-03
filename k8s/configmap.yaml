@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8slokilogs-configmap
+  labels:
+    app: k8slokilogs
+data:
+  loki_host_ip: "http://loki.ix-loki.svc.cluster.local"
+  loki_host_port: "3100"
+  frequency_seconds: "60"
+  namespaces: "*"
